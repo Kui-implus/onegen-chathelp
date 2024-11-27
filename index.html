@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天助手</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="chat-section">
+                <div class="chat-header">
+                    <h3>聊天记录 ({{ messages.length }}条)</h3>
+                    <div class="chat-controls">
+                        <button class="icon-button" @click="copyMessages" title="复制聊天记录" v-if="messages.length > 0">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button @click="clearChat" v-if="messages.length > 0">清除聊天</button>
+                    </div>
+                </div>
+                <div class="chat-messages" ref="chatMessages">
+                    <div v-for="(message, index) in messages" :key="index" 
+                         :class="['message', isUserMessage(message) ? 'user-message' : 'bot-message']">
+                        <div class="message-content">
+                            <div class="sender">{{ message.sender_name }}</div>
+                            <div class="text">{{ message.content }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="config-section">
+                <div class="config-form">
+                    <div class="config-header">
+                        <h3>配置信息</h3>
+                        <button class="icon-button" @click="clearLocalStorage" title="清除本地保存的配置">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label>API地址：</label>
+                        <input type="text" v-model="apiUrl" placeholder="请输入API地址">
+                    </div>
+                    <div class="form-group">
+                        <label>最大聊天记录数：</label>
+                        <input type="number" v-model.number="maxHistorySize" min="1" max="100" placeholder="请输入最大聊天记录数">
+                        <small class="form-text">建议设置在1-100之间，每次请求只携带最近的记录数</small>
+                    </div>
+                    <div class="form-group">
+                        <label>配置信息：</label>
+                        <textarea v-model="configJson" placeholder="请输入JSON配置"></textarea>
+                    </div>
+                    <button @click="startChat" :disabled="chatStarted">开始对话</button>
+                </div>
+                <div class="input-area" v-if="chatStarted">
+                    <input type="text" 
+                           v-model="userInput" 
+                           @keyup.enter="sendMessage" 
+                           placeholder="输入消息..." 
+                           :disabled="isSending">
+                    <button @click="sendMessage" :disabled="isSending || !userInput.trim()">
+                        <i class="fas fa-spinner fa-spin" v-if="isSending"></i>
+                        <span v-else>发送</span>
+                    </button>
+                </div>
+                <div class="debug-section" v-if="lastResponse || lastRequest">
+                    <div class="debug-header">
+                        <h3>调试信息</h3>
+                        <div class="debug-controls">
+                            <button @click="showDebug = !showDebug">
+                                {{ showDebug ? '隐藏' : '显示' }}调试信息
+                            </button>
+                            <button class="icon-button" @click="copyDebugInfo('all')" v-if="showDebug" title="复制全部">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div v-if="showDebug" class="debug-info">
+                        <div class="debug-item" v-if="debugData.request">
+                            <div class="debug-item-header">
+                                <div class="debug-key">请求数据:</div>
+                                <button class="icon-button" @click="copyDebugInfo('request')" title="复制请求数据">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre v-html="highlightJson(debugData.request)"></pre>
+                        </div>
+                        <div class="debug-item" v-if="debugData.response">
+                            <div class="debug-item-header">
+                                <div class="debug-key">响应数据:</div>
+                                <button class="icon-button" @click="copyDebugInfo('response')" title="复制响应数据">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div v-for="(value, key) in debugData.response" :key="key" class="debug-subitem">
+                                <div class="debug-subkey">{{ key }}:</div>
+                                <pre v-if="typeof value === 'object'" v-html="highlightJson(value)"></pre>
+                                <pre v-else>{{ value }}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html> 

@@ -1,0 +1,31 @@
+{
+  "name": "onegen-chathelp",
+  "version": "1.0.0",
+  "description": "A chat helper tool for onegen workflow with multi-turn conversation support",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-username/onegen-chathelp.git"
+  },
+  "keywords": [
+    "chat",
+    "onegen",
+    "workflow",
+    "proxy",
+    "vue"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/your-username/onegen-chathelp/issues"
+  },
+  "homepage": "https://github.com/your-username/onegen-chathelp#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "http-proxy-middleware": "^2.0.6"
+  }
+} 

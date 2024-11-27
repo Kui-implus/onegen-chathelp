@@ -1,0 +1,403 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f0f2f5;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    padding: 20px;
+    gap: 20px;
+}
+
+.chat-section {
+    flex: 1;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.message {
+    margin-bottom: 15px;
+    max-width: 80%;
+}
+
+.user-message {
+    margin-left: auto;
+}
+
+.bot-message {
+    margin-right: auto;
+}
+
+.message-content {
+    padding: 10px 15px;
+    border-radius: 15px;
+    background: #e9ecef;
+}
+
+.user-message .message-content {
+    background: #007bff;
+    color: white;
+}
+
+.sender {
+    font-size: 0.8em;
+    margin-bottom: 5px;
+    color: #666;
+}
+
+.user-message .sender {
+    color: #e9ecef;
+}
+
+.config-section {
+    width: 400px;
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.config-form {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+textarea {
+    height: 150px;
+    resize: vertical;
+}
+
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+button:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+}
+
+.input-area {
+    margin-top: auto;
+    display: flex;
+    gap: 10px;
+}
+
+.input-area input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.debug-section {
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.debug-toggle {
+    margin-bottom: 10px;
+}
+
+.debug-toggle button {
+    background: #6c757d;
+    font-size: 0.9em;
+    padding: 5px 10px;
+}
+
+.debug-info {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    max-height: 500px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+}
+
+.debug-item {
+    margin-bottom: 15px;
+}
+
+.debug-item:last-child {
+    margin-bottom: 0;
+}
+
+.debug-key {
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+    font-family: monospace;
+    font-size: 1.1em;
+}
+
+.debug-info pre {
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+    margin: 0;
+    font-family: monospace;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.debug-info code {
+    font-family: monospace;
+}
+
+/* highlight.js 自定义样式 */
+.hljs {
+    background: #ffffff !important;
+    padding: 10px !important;
+    border-radius: 4px;
+}
+
+.chat-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.chat-controls button:not(.icon-button) {
+    background: #dc3545;
+    font-size: 0.9em;
+    padding: 5px 10px;
+}
+
+.chat-controls button:not(.icon-button):hover {
+    background: #c82333;
+}
+
+.chat-controls .icon-button {
+    font-size: 1.1em;
+}
+
+.form-text {
+    font-size: 0.8em;
+    color: #6c757d;
+    margin-top: -8px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.debug-subitem {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+.debug-subitem:last-child {
+    margin-bottom: 0;
+}
+
+.debug-subkey {
+    font-weight: normal;
+    color: #666;
+    margin-bottom: 3px;
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+.debug-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.copy-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.copy-buttons button {
+    background: #28a745;
+    font-size: 0.9em;
+    padding: 5px 10px;
+}
+
+.copy-buttons button:hover {
+    background: #218838;
+}
+
+.debug-controls > button {
+    background: #6c757d;
+    font-size: 0.9em;
+    padding: 5px 10px;
+}
+
+/* 复制成功的动画效果 */
+@keyframes copySuccess {
+    0% { background: #28a745; }
+    50% { background: #218838; }
+    100% { background: #28a745; }
+}
+
+.copy-success {
+    animation: copySuccess 0.5s ease;
+}
+
+.debug-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.debug-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    color: #6c757d;
+    transition: color 0.3s;
+}
+
+.icon-button:hover {
+    color: #28a745;
+}
+
+.icon-button.copy-success {
+    color: #28a745;
+}
+
+.debug-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.debug-controls > button:not(.icon-button) {
+    background: #6c757d;
+    font-size: 0.9em;
+    padding: 5px 10px;
+}
+
+/* 复制成功的动画效果 */
+@keyframes copySuccess {
+    0% { color: #6c757d; }
+    50% { color: #28a745; }
+    100% { color: #6c757d; }
+}
+
+.copy-success {
+    animation: copySuccess 0.5s ease;
+}
+
+.config-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.config-header h3 {
+    margin: 0;
+}
+
+.config-header .icon-button {
+    color: #dc3545;
+}
+
+.config-header .icon-button:hover {
+    color: #c82333;
+}
+
+.input-area input:disabled {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+.input-area button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+.input-area button .fa-spinner {
+    margin-right: 0;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.fa-spin {
+    animation: spin 1s linear infinite;
+}
+ 
