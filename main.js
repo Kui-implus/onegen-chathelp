@@ -156,11 +156,16 @@ new Vue({
             if (!this.currentConfig) return false;
             
             const userName = this.currentConfig.data.user?.name;
-            if (!userName) return false;
-
-            return message.sender_name === userName || 
-                   message.role === 'user' || 
-                   message.is_user === true;
+            const aiName = this.currentConfig.data.character?.name;
+            
+            if (message.sender_name === userName) return true;
+            if (message.sender_name === aiName) return false;
+            
+            if (!message.sender_name) {
+                return message.role === 'user' || message.is_user === true;
+            }
+            
+            return message.sender_name !== aiName;
         },
         startChat() {
             try {
@@ -169,18 +174,25 @@ new Vue({
                 
                 if (config.data && config.data.chat_histories && Array.isArray(config.data.chat_histories)) {
                     const processedMessages = config.data.chat_histories.map(msg => {
+                        const userName = config.data.user?.name;
+                        const aiName = config.data.character?.name;
+                        
                         if (!msg.sender_name) {
-                            const userName = config.data.user?.name || 'user';
-                            const aiName = config.data.character?.name || 'Lisa';
-                            
                             if (msg.role === 'user' || msg.is_user) {
                                 msg.sender_name = userName;
                             } else if (msg.role === 'assistant' || msg.is_ai) {
                                 msg.sender_name = aiName;
-                            } else {
-                                msg.sender_name = aiName;
                             }
                         }
+                        
+                        if (msg.sender_name === userName) {
+                            msg.role = 'user';
+                        } else if (msg.sender_name === aiName) {
+                            msg.role = 'assistant';
+                        } else if (!msg.role) {
+                            msg.role = msg.sender_name === aiName ? 'assistant' : 'user';
+                        }
+                        
                         return msg;
                     });
 
@@ -227,7 +239,7 @@ new Vue({
 
             this.isSending = true;
             const userMessage = {
-                sender_name: this.currentConfig.data.user.name || 'user',
+                sender_name: this.currentConfig.data.user?.name || '',
                 content: this.userInput,
                 role: 'user'
             };
@@ -257,7 +269,7 @@ new Vue({
                 
                 if (response.data && response.data.result && response.data.result.response) {
                     const botMessage = {
-                        sender_name: config.data.character.name,
+                        sender_name: config.data.character?.name,
                         content: response.data.result.response,
                         role: 'assistant'
                     };
